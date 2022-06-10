@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<!--<h1 align="center">Notes</h1>-->
+<!--<ul class="list-group list-group-flush" id="notes">-->
+<!--    {% for note in user.notes %}-->
+<!--    <li class="list-group-item">-->
+
+<!--        {{ note.data }}-->
+<!--        <button type="button" class="close" onclick="deleteNote({{ note.id }})">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--<form method="POST">-->
+<!--    <textarea name = "note" id="note" class="form-control"></textarea>-->
+<!--    <br />-->
+<!--    <div align="center">-->
+<!--        <button type="submit" class="btn btn-primary">Add Note</button>-->
+<!--    </div>-->
+<!--</form>-->
+<div style="position:relative;width:267px;height:25px;overflow:hidden;">
+    <div style="position:absolute;top:-276px;left:-5px">
+        <iframe width="400" height="300" src={{video}} allow="autoplay">
+        </iframe>
+    </div>
+</div>
+<br/>
+<!--<img src="/static/curtains.png" alt="No peeking!" height="420" width="345" >-->
+<form method="POST" id="answer" onkeydown="return event.key != 'Enter'">
+    <div class="text-container">
+        <input type="text" name="game" id="game" list="games" class="form-control"
+                    placeholder="Enter game name" autocomplete="off" />
+        <datalist id="games">
+            {% for elem in games_list %}
+                <option value= "{{elem}}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <br/>
+    <div class="text-container">
+        <input type="text" name="joke" id="joke" list="jokes" class="form-control"
+                    placeholder="Enter joke name" autocomplete="off" />
+        <datalist id="jokes">
+            {% for elem in jokes_list %}
+                <option value= "{{elem}}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="hidden" id="video_id" name="video_id" value={{id}}>
+</form>
+<script>
+    let timeout;
+    timeout = setTimeout(alertFunc, 30000);
+
+    function alertFunc() {
+        document.getElementById("answer").submit();
+    }
+</script>
+<br/>
+<p id="countdown"></p>
+<script>
+    var timer = 30;
+    setInterval(decreaseTimer, 1000);
+    function decreaseTimer() {
+        timer--;
+        document.getElementById("countdown").innerHTML = timer + " seconds left";
+    }
+</script>
+<p id="thing"></p>
+<script>
+    count = localStorage.getItem("count");
+    count++;
+    localStorage.setItem("count", count);
+    document.getElementById('thing').innerHTML = count + " / 10 songs";
+</script>
+{% endblock %}

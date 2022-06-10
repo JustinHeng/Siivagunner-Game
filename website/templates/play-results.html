@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<!--<h1 align="center">Notes</h1>-->
+<!--<ul class="list-group list-group-flush" id="notes">-->
+<!--    {% for note in user.notes %}-->
+<!--    <li class="list-group-item">-->
+
+<!--        {{ note.data }}-->
+<!--        <button type="button" class="close" onclick="deleteNote({{ note.id }})">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--<form method="POST">-->
+<!--    <textarea name = "note" id="note" class="form-control"></textarea>-->
+<!--    <br />-->
+<!--    <div align="center">-->
+<!--        <button type="submit" class="btn btn-primary">Add Note</button>-->
+<!--    </div>-->
+<!--</form>-->
+
+<iframe width="400" height="300" src={{video}} allow="autoplay">
+</iframe>
+
+<br/>
+<!--<img src="/static/curtains.png" alt="No peeking!" height="420" width="345" >-->
+<form method="GET" id="answer" onkeydown="return event.key != 'Enter'">
+    <input type="hidden" id="count" name="count" value=0>
+</form>
+<script>
+    let timeout;
+    timeout = setTimeout(alertFunc, 10000);
+
+    function alertFunc() {
+        document.getElementById("answer").submit();
+    }
+</script>
+<br/>
+<p id="countdown"></p>
+<script>
+    var timer = 10;
+    setInterval(decreaseTimer, 1000);
+    function decreaseTimer() {
+        timer--;
+        document.getElementById("countdown").innerHTML = timer + " seconds left";
+    }
+</script>
+<p id="thing"></p>
+<script>
+    count = localStorage.getItem("count");
+    count++;
+    localStorage.setItem("count", count);
+    document.getElementById('thing').innerHTML = count + " / 10 songs";
+    document.getElementById('count').value = count;
+</script>
+{% endblock %}

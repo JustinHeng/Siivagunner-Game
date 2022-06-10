@@ -1,88 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<!--<h1 align="center">Notes</h1>-->
-<!--<ul class="list-group list-group-flush" id="notes">-->
-<!--    {% for note in user.notes %}-->
-<!--    <li class="list-group-item">-->
-
-<!--        {{ note.data }}-->
-<!--        <button type="button" class="close" onclick="deleteNote({{ note.id }})">-->
-<!--            <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--    </li>-->
-<!--    {% endfor %}-->
-<!--</ul>-->
-<!--<form method="POST">-->
-<!--    <textarea name = "note" id="note" class="form-control"></textarea>-->
-<!--    <br />-->
-<!--    <div align="center">-->
-<!--        <button type="submit" class="btn btn-primary">Add Note</button>-->
-<!--    </div>-->
-<!--</form>-->
-<iframe width="420" height="345" src={{video}} allow="autoplay">
-</iframe>
-<form method="POST" id="answer">
-    <div class="text-container">
-        <input type="text" name="game" id="game" list="games" class="form-control"
-                    placeholder="Enter game name" autocomplete="off" />
-        <datalist id="games">
-            <option value="Objective C">Objective C</option>
-            <option value="C++">C++</option>
-            <option value="C#">C#</option>
-            <option value="Cobol">Cobol</option>
-            <option value="Go">Go</option>
-            <option value="Java">Java</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="Python">Python</option>
-            <option value="PHP">PHP</option>
-            <option value="Pascal">Pascal</option>
-            <option value="Perl">Perl</option>
-            <option value="R">R</option>
-            <option value="Swift">Swift</option>
-        </datalist>
-    </div>
-    <br/>
-    <div class="text-container">
-        <input type="text" name="joke" id="joke" list="jokes" class="form-control"
-                    placeholder="Enter joke name" autocomplete="off" />
-        <datalist id="jokes">
-            <option value="Objective C">Objective C</option>
-            <option value="C++">C++</option>
-            <option value="C#">C#</option>
-            <option value="Cobol">Cobol</option>
-            <option value="Go">Go</option>
-            <option value="Java">Java</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="Python">Python</option>
-            <option value="PHP">PHP</option>
-            <option value="Pascal">Pascal</option>
-            <option value="Perl">Perl</option>
-            <option value="R">R</option>
-            <option value="Swift">Swift</option>
-        </datalist>
-    </div>
-    <br/>
-    <button type="submit" class="btn btn-primary">Submit</button>
+<form method="POST">
+    <p id="thing"></p>
+    <script>
+        localStorage.setItem("count", 0);
+        document.getElementById('thing').innerHTML = count;
+    </script>
+    <button type="submit" class="btn btn-primary">Play Now</button>
 </form>
-<script>
-    let timeout;
-
-    timeout = setTimeout(alertFunc, 30000);
-
-    function alertFunc() {
-        document.getElementById("answer").submit();
-    }
-</script>
-<p id="countdown"></p>
-<script>
-    var timer = 30;
-    setInterval(decreaseTimer, 1000);
-    function decreaseTimer() {
-        timer--;
-        document.getElementById("countdown").innerHTML = timer + " seconds left";
-    }
-
-
-</script>
 {% endblock %}

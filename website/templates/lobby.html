@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Lobby{% endblock %}
+{% block content %}
+<p>Silvagunner Music Quiz</p>
+<form method="POST">
+    <script>
+        sessionStorage.setItem("count", 0);
+        sessionStorage.setItem("score", 0);
+        sessionStorage.setItem("page", "p");
+    </script>
+    <button type="submit" class="btn btn-primary">Start Game</button>
+</form>
+<br/>
+<button id="goHome" class="btn btn-primary" >Back to Home</button>
+<script type="text/javascript">
+    document.getElementById("goHome").onclick = function () {
+        location.href = "/";
+    };
+</script>
+<p id="showRoom"></p>
+<script>
+    document.getElementById('showRoom').innerHTML = "Room: " + sessionStorage.getItem("currentRoom");
+</script>
+
+
+
+{% endblock %}
+{% block homeHtml %}
+<!--override-->
+{% endblock %}

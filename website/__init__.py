@@ -8,7 +8,7 @@ DB_NAME = "database.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = '264958269512309'
+    app.config['SECRET_KEY'] = 'tempkey'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
@@ -21,6 +21,8 @@ def create_app():
     from .models import User, Note
 
     create_database(app)
+    # db.drop_all(app=app)
+    # db.create_all(app=app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Play{% endblock %}
 {% block content %}
 <!--<h1 align="center">Notes</h1>-->
 <!--<ul class="list-group list-group-flush" id="notes">-->
@@ -26,6 +26,7 @@
         </iframe>
     </div>
 </div>
+<p>Click To Play Song</p>
 <br/>
 <!--<img src="/static/curtains.png" alt="No peeking!" height="420" width="345" >-->
 <form method="POST" id="answer" onkeydown="return event.key != 'Enter'">
@@ -51,6 +52,9 @@
     <br/>
     <button type="submit" class="btn btn-primary">Submit</button>
     <input type="hidden" id="video_id" name="video_id" value={{id}}>
+    <input type="hidden" id="count" name="count" value=0>
+    <input type="hidden" id="score" name="score" value={{score}}>
+    <input type="hidden" id="page" name="page" value="">
 </form>
 <script>
     let timeout;
@@ -71,10 +75,21 @@
     }
 </script>
 <p id="thing"></p>
+<p id="score_text"></p>
 <script>
-    count = localStorage.getItem("count");
+    count = sessionStorage.getItem("count");
     count++;
-    localStorage.setItem("count", count);
-    document.getElementById('thing').innerHTML = count + " / 10 songs";
+    sessionStorage.setItem("count", count);
+    document.getElementById('thing').innerHTML = count + " / 3 songs";
+    document.getElementById('count').value = count;
+
+    score = parseInt(sessionStorage.getItem("score"));
+    sessionStorage.setItem("score", score);
+    document.getElementById('score_text').innerHTML = "Score: " + score;
+
+    sessionStorage.setItem("page", "pr");
+    document.getElementById('page').value = "pr";
 </script>
+{% endblock %}
+{% block homeHtml %}
 {% endblock %}

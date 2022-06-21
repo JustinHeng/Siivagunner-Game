@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Final Results{% endblock %}
+{% block content %}
+<!--<h1 align="center">Notes</h1>-->
+<!--<ul class="list-group list-group-flush" id="notes">-->
+<!--    {% for note in user.notes %}-->
+<!--    <li class="list-group-item">-->
+
+<!--        {{ note.data }}-->
+<!--        <button type="button" class="close" onclick="deleteNote({{ note.id }})">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--<form method="POST">-->
+<!--    <textarea name = "note" id="note" class="form-control"></textarea>-->
+<!--    <br />-->
+<!--    <div align="center">-->
+<!--        <button type="submit" class="btn btn-primary">Add Note</button>-->
+<!--    </div>-->
+<!--</form>-->
+<h1 align="center">Results</h1>
+<br/>
+<!--<img src="/static/curtains.png" alt="No peeking!" height="420" width="345" >-->
+<form method="POST" id="answer" onkeydown="return event.key != 'Enter'">
+    <button type="submit" class="btn btn-primary">Return to Home</button>
+    <input type="hidden" id="video_id" name="video_id" value={{id}}>
+</form>
+<br/>
+<p id="thing"></p>
+<script>
+    count = sessionStorage.getItem("count");
+    sessionStorage.setItem("count", count);
+    document.getElementById('thing').innerHTML = count + " / 3 songs";
+    document.getElementById('count').value = count;
+</script>
+<p id="score_text"></p>
+<script>
+    final_score = sessionStorage.getItem("score");
+    document.getElementById('score_text').innerHTML = "Score: " + final_score;
+</script>
+{% endblock %}
+{% block homeHtml %}
+{% endblock %}

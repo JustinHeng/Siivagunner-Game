@@ -1,12 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<form method="POST">
-    <p id="thing"></p>
-    <script>
-        localStorage.setItem("count", 0);
-        document.getElementById('thing').innerHTML = count;
-    </script>
-    <button type="submit" class="btn btn-primary">Play Now</button>
-</form>
+<!--<h1 align="center">Silvagunner Music Quiz</h1>-->
+<!--<form method="POST">-->
+<!--    <script>-->
+<!--        sessionStorage.setItem("count", 0);-->
+<!--        sessionStorage.setItem("score", 0);-->
+<!--        sessionStorage.setItem("page", "p");-->
+<!--    </script>-->
+<!--    <button type="submit" class="btn btn-primary">Create Room</button>-->
+<!--</form>-->
+<!--<br/>-->
+<!--<form method="POST">-->
+<!--    <script>-->
+<!--        sessionStorage.setItem("count", 0);-->
+<!--        sessionStorage.setItem("score", 0);-->
+<!--        sessionStorage.setItem("page", "p");-->
+<!--    </script>-->
+<!--    <button type="submit" class="btn btn-primary">Join Room</button>-->
+<!--    <input type="text" id="roomName" name="roomName" placeholder="Enter room name"/>-->
+<!--</form>-->
+{% endblock %}
+{% block chat %}
 {% endblock %}

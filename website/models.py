@@ -16,14 +16,11 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(100))
     notes = db.relationship('Note')
 
-class Song(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    video = db.Column(db.String(100), unique=True)
-    game = db.Column(db.String(100))
-    joke = db.Column(db.String(100))
-    # joke_id = db.Column(db.Integer, db.ForeignKey('joke.id'))
 
-# class Joke(db.Model, UserMixin):
-#     id = db.Column(db.Integer, primary_key=True)
-#     joke = db.Column(db.String(255))
+class History(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(500))
+    user_id = db.Column(db.String(20))
+
+
 

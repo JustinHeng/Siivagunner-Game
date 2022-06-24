@@ -65,35 +65,16 @@
         {% endwith %}
 
         <div class="container">
-            {% block content %} {% endblock %}
-            {% block homeHtml %}
             <h1 align="center">Silvagunner Music Quiz</h1>
-<!--            <form method="POST">-->
-<!--                <script>-->
-<!--                    sessionStorage.setItem("count", 0);-->
-<!--                    sessionStorage.setItem("score", 0);-->
-<!--                    sessionStorage.setItem("page", "p");-->
-<!--                </script>-->
-<!--                <button id="createButton" type="submit" class="btn btn-primary">Create Room</button>-->
-<!--            </form>-->
-<!--            <br/>-->
-            <form method="POST">
-                <script>
-                    sessionStorage.setItem("count", 0);
-                    sessionStorage.setItem("score", 0);
-                    sessionStorage.setItem("page", "p");
-                </script>
-                <button id="joinButton" type="submit" class="btn btn-primary">Join Room</button>
-                <input type="text" id="roomName" name="roomName" placeholder="Enter room name"/>
-            </form>
-            {% endblock %}
+            {% block content %} {% endblock %}
         </div>
 
         {% if user.is_authenticated %}
-        <p style="text-align:right;">{{user.first_name}}</p>
+        <p style="text-align:right;">Logged in as: {{user.first_name}} </p>
         {% endif %}
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+<!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>-->
         <script
           src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
           integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -114,47 +95,7 @@
           type="text/javascript"
           src="{{ url_for('static', filename='index.js') }}"
         ></script>
-        <script type="text/javascript">
-        $(document).ready(function() {
-            var socket = io.connect('http://127.0.0.1:5000');
-
-            socket.on('message', function(msg){
-                $("#allMessages").append('<li>' + msg + '</li>');
-            });
-
-            $('#sendButton').on('click', function(){
-                socket.send("{{user.first_name}}: " + $('#myMessage').val());
-                $('#myMessage').val('');
-                console.log("working");
-            });
-
-<!--            $('#createButton').on('click', function(){-->
-<!--                socket.emit('create_room');-->
-<!--                console.log("working");-->
-<!--            });-->
-
-            $('#joinButton').on('click', function(){
-                socket.emit('join_room', document.getElementById("roomName").value);
-                sessionStorage.setItem("currentRoom", document.getElementById("roomName").value);
-                console.log("working");
-            });
-
-        });
-        </script>
-        {% block chat %}
-        <div style="position: absolute;
-            bottom: 300px;
-            left: 10px;
-            width: 300px;
-            word-wrap:break-word;">
-            <ul id="allMessages">
-                {% for msg in messages %}
-                <li>{{msg.message}}</li>
-                {% endfor %}
-            </ul>
-            <input type="text" id="myMessage">
-            <button id="sendButton">Send</button>
-        </div>
-        {% endblock %}
+        {% block socket %} {% endblock %}
+        {% block playScript %} {% endblock %}
     </body>
 </html>

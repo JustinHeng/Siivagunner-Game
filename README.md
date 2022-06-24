@@ -1,10 +1,12 @@
 # Silvagunner Music Quiz
  Silvagunner music guessing game website
 
--users can make an account and play a music quiz that consists of 3 randomly chosen songs from a database of currently 50 songs
+-Users can make an account and play a music quiz that consists of 3 randomly chosen songs from a database of currently ~70 songs
 
--the user must guess the game and song parody and can get either 2 points, 1 point, or no points for guessing correctly or incorrectly
+-The user must guess the game and song parody and can get either 2 points, 1 point, or no points for guessing correctly or incorrectly
 
--currently only supports single player
+-Users can make private rooms to play with friends
 
--songs cans be added in the Siivagunner.csv file (must include youtube link, song name, and parody name)
+-Supports both single player and multiplayer
+
+-Songs cans be added in the Siivagunner.csv file (must include youtube link, song name, and parody name)

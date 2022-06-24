@@ -1,34 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Play{% endblock %}
 {% block content %}
-<!--<h1 align="center">Notes</h1>-->
-<!--<ul class="list-group list-group-flush" id="notes">-->
-<!--    {% for note in user.notes %}-->
-<!--    <li class="list-group-item">-->
-
-<!--        {{ note.data }}-->
-<!--        <button type="button" class="close" onclick="deleteNote({{ note.id }})">-->
-<!--            <span aria-hidden="true">&times;</span>-->
-<!--        </button>-->
-<!--    </li>-->
-<!--    {% endfor %}-->
-<!--</ul>-->
-<!--<form method="POST">-->
-<!--    <textarea name = "note" id="note" class="form-control"></textarea>-->
-<!--    <br />-->
-<!--    <div align="center">-->
-<!--        <button type="submit" class="btn btn-primary">Add Note</button>-->
-<!--    </div>-->
-<!--</form>-->
-<div style="position:relative;width:267px;height:25px;overflow:hidden;">
-    <div style="position:absolute;top:-276px;left:-5px">
-        <iframe width="400" height="300" src={{video}} allow="autoplay">
-        </iframe>
-    </div>
-</div>
-<p>Click To Play Song</p>
 <br/>
-<!--<img src="/static/curtains.png" alt="No peeking!" height="420" width="345" >-->
+<!--show a hidden youtube link-->
+<div id="hiddenVideo">
+    <div style="position:relative;width:267px;height:25px;overflow:hidden;">
+        <div style="position:absolute;top:-276px;left:-5px">
+            <iframe id="vid" width="400" height="300" src="{{video[0]}}" allow="autoplay">
+            </iframe>
+        </div>
+    </div>
+    <p>Click To Play Song</p>
+    <br/>
+</div>
+
+<!--reveal the youtube link-->
+<iframe id="answerVideo" width="400" height="300" src="{{video[0]}}" allow="autoplay">
+</iframe>
+
+<!--forms for answering-->
 <form method="POST" id="answer" onkeydown="return event.key != 'Enter'">
     <div class="text-container">
         <input type="text" name="game" id="game" list="games" class="form-control"
@@ -50,46 +40,223 @@
         </datalist>
     </div>
     <br/>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <input type="hidden" id="video_id" name="video_id" value={{id}}>
-    <input type="hidden" id="count" name="count" value=0>
-    <input type="hidden" id="score" name="score" value={{score}}>
-    <input type="hidden" id="page" name="page" value="">
+<!--    <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--    <input type="hidden" id="video_id" name="video_id" value={{id}}>-->
+<!--    <input type="hidden" id="count" name="count" value=0>-->
+<!--    <input type="hidden" id="score" name="score" value={{score}}>-->
+<!--    <input type="hidden" id="page" name="page" value="">-->
 </form>
-<script>
-    let timeout;
-    timeout = setTimeout(alertFunc, 30000);
 
-    function alertFunc() {
-        document.getElementById("answer").submit();
-    }
-</script>
+<button id="startButton" type="submit" class="btn btn-primary">Start Game</button>
+
 <br/>
 <p id="countdown"></p>
-<script>
-    var timer = 30;
-    setInterval(decreaseTimer, 1000);
-    function decreaseTimer() {
-        timer--;
-        document.getElementById("countdown").innerHTML = timer + " seconds left";
-    }
-</script>
 <p id="thing"></p>
 <p id="score_text"></p>
+<br/>
+<p id="showRoom"></p>
 <script>
-    count = sessionStorage.getItem("count");
-    count++;
-    sessionStorage.setItem("count", count);
-    document.getElementById('thing').innerHTML = count + " / 3 songs";
-    document.getElementById('count').value = count;
+    document.getElementById('showRoom').innerHTML = "Room: " + sessionStorage.getItem("currentRoom");
+</script>
 
-    score = parseInt(sessionStorage.getItem("score"));
-    sessionStorage.setItem("score", score);
-    document.getElementById('score_text').innerHTML = "Score: " + score;
+<div id="textScroll" style="position: absolute;
+    bottom: 350px;
+    max-height: 526px;
+    left: 10px;
+    width: 300px;
+    word-wrap: break-word;
+    overflow-y: auto">
+    <ul id="allMessages">
+        {% for msg in messages %}
+        <li>{{msg.message}}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div style="position: absolute;
+    bottom: 300px;
+    left: 10px;
+    width: 300px;">
+    <input type="text" id="myMessage">
+    <button id="sendButton">Send</button>
+</div>
+{% endblock %}
+{% block socket %}
+<script type="text/javascript">
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    sessionStorage.setItem("page", "pr");
-    document.getElementById('page').value = "pr";
+    socket.on('connect', function(){
+        socket.emit("join_room", sessionStorage.getItem("currentRoom"));
+    });
+
+    socket.on('disconnect', function(){
+        socket.emit("leave_room", sessionStorage.getItem("currentRoom"));
+    });
+
+    socket.on('message', function(msg){
+        $("#allMessages").append('<li>' + msg + '</li>');
+        var elem = document.getElementById('textScroll');
+        elem.scrollTop = elem.scrollHeight;
+    });
+
+    $('#sendButton').on('click', function(){
+        if ($('#myMessage').val() != ''){
+            socket.emit("message", "{{user.first_name}}: " + $('#myMessage').val(), sessionStorage.getItem("currentRoom"));
+            $('#myMessage').val('');
+        }
+    });
+
+    $('#startButton').on('click', function(){
+        socket.emit("start_game", sessionStorage.getItem("currentRoom"));
+    });
+
 </script>
 {% endblock %}
-{% block homeHtml %}
+{% block playScript %}
+<script>
+    <!--    set up variables-->
+    let showTimeout, hideTimeout;
+    document.getElementById("answerVideo").style.display = "none";
+    var x = document.getElementById("hiddenVideo");
+    var y = document.getElementById("answerVideo");
+    var z = document.getElementById("vid");
+    var forms = document.getElementById("answer");
+    var game = document.getElementById("game");
+    var joke = document.getElementById("joke");
+    count = 1;
+    score = 0;
+    document.getElementById('thing').innerHTML = count + " / 3 songs";
+    document.getElementById('score_text').innerHTML = "Score: " + score;
+    var jokeAns = "";
+    var gameAns = "";
+    var timer = 10;
+    var showingAnswer = true;
+    var elem = document.getElementById('textScroll');
+<!--    set up list of videos, games, and jokes-->
+    const allVideos = [];
+    const allGames = [];
+    const allJokes = [];
+    {% for item in video %}
+        allVideos.push("{{item}}");
+    {% endfor %}
+    {% for item in gameans %}
+        allGames.push("{{item}}");
+    {% endfor %}
+    {% for item in jokeans %}
+        allJokes.push("{{item}}");
+    {% endfor %}
+    rand = Math.floor(Math.random() * allVideos.length);
+    z.src = allVideos[rand];
+
+    socket.on('getRand', function(randVid) {
+        rand = randVid["randVid"];
+        z.src = allVideos[rand];
+    });
+
+    <!--start up lobby-->
+    x.style.display = "none";
+    y.style.display = "none";
+    forms.style.display = "none";
+    socket.on('startGame', function(randVid) {
+        score = 0;
+        count = 1;
+        $("#allMessages").append('<li>-----------Round ' + count + '-----------</li>');
+        elem.scrollTop = elem.scrollHeight;
+        document.getElementById('score_text').innerHTML = "Score: " + score;
+        document.getElementById('thing').innerHTML = count + " / 3 songs";
+        document.getElementById('countdown').style.display = "block";
+        x.style.display = "block";
+        y.style.display = "none";
+        forms.style.display = "block";
+        showTimeout = setTimeout(showVideo, 10000);
+        timerCountdown = setInterval(decreaseTimer, 1000);
+        timer = 10;
+        rand = randVid["randVid"];
+        showingAnswer = true;
+        game.value = "";
+        joke.value = "";
+        document.getElementById("startButton").style.display = "none";
+<!--        rand = Math.floor(Math.random() * allVideos.length);-->
+        z.src = allVideos[rand];
+    });
+
+    function showFinal(){
+        $("#allMessages").append('<li>-------Final Standings!-------</li>')
+        elem.scrollTop = elem.scrollHeight;
+    }
+
+    function changeSong(){
+        socket.emit("get_rand", sessionStorage.getItem("currentRoom"));
+    }
+
+    <!--countdown timer-->
+    function decreaseTimer() {
+        timer--;
+        if(timer < 1 && showingAnswer == true){
+            timer = 5;
+            showingAnswer = false;
+        } else if(timer < 1 && showingAnswer == false){
+            timer = 10;
+            showingAnswer = true;
+        }
+        document.getElementById("countdown").innerHTML = timer + " seconds left";
+    }
+
+    function showVideo() {
+
+        y.src = allVideos[rand];
+        gameAns = allGames[rand];
+        jokeAns = allJokes[rand];
+
+<!--        check for correct answer and give points-->
+        gameResponse = game.value;
+        jokeResponse = joke.value;
+        $("#allMessages").append('<li>Game: ' + gameAns +'</li>');
+        $("#allMessages").append('<li>Joke: ' + jokeAns +'</li>');
+        elem.scrollTop = elem.scrollHeight;
+        if (gameResponse == gameAns && jokeResponse == jokeAns){
+            socket.emit("message", "{{user.first_name}} got 2 points!", sessionStorage.getItem("currentRoom"));
+            score += 2;
+        } else if (gameResponse != gameAns && jokeResponse != jokeAns){
+            score += 0;
+        } else {
+            socket.emit("message", "{{user.first_name}} got 1 points.", sessionStorage.getItem("currentRoom"));
+            score += 1;
+        }
+        document.getElementById('score_text').innerHTML = "Score: " + score;
+
+        x.style.display = "none";
+        y.style.display = "block";
+        forms.style.display = "none";
+        if (count > 2) {
+            showFinalText = setTimeout(showFinal, 2000);
+        }
+        changeSongTimeout = setTimeout(changeSong, 2000);
+        hideTimeout = setTimeout(hideVideo, 5000);
+    }
+
+    function hideVideo() {
+        if (count > 2) {
+            x.style.display = "none";
+            y.style.display = "none";
+            forms.style.display = "none";
+            clearInterval(timerCountdown);
+            socket.emit("message", "{{user.first_name}}: " + score + " points!", sessionStorage.getItem("currentRoom"));
+            document.getElementById('countdown').style.display = "none";
+            document.getElementById('startButton').innerHTML = "Play Again";
+            document.getElementById('startButton').style.display = "block";
+            z.src = "https://www.youtube.com/embed/watch?v=dQw4w9WgXcQ?controls=0";
+        } else {
+            count++;
+            $("#allMessages").append('<li>-----------Round ' + count + '-----------</li>');
+            elem.scrollTop = elem.scrollHeight;
+            document.getElementById('thing').innerHTML = count + " / 3 songs";
+            x.style.display = "block";
+            y.style.display = "none";
+            forms.style.display = "block";
+            game.value = "";
+            joke.value = "";
+            showTimeout = setTimeout(showVideo, 10000);
+        }
+    }
+</script>
 {% endblock %}

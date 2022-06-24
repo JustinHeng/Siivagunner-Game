@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<!--<h1 align="center">Silvagunner Music Quiz</h1>-->
-<!--<form method="POST">-->
-<!--    <script>-->
-<!--        sessionStorage.setItem("count", 0);-->
-<!--        sessionStorage.setItem("score", 0);-->
-<!--        sessionStorage.setItem("page", "p");-->
-<!--    </script>-->
-<!--    <button type="submit" class="btn btn-primary">Create Room</button>-->
-<!--</form>-->
-<!--<br/>-->
-<!--<form method="POST">-->
-<!--    <script>-->
-<!--        sessionStorage.setItem("count", 0);-->
-<!--        sessionStorage.setItem("score", 0);-->
-<!--        sessionStorage.setItem("page", "p");-->
-<!--    </script>-->
-<!--    <button type="submit" class="btn btn-primary">Join Room</button>-->
-<!--    <input type="text" id="roomName" name="roomName" placeholder="Enter room name"/>-->
-<!--</form>-->
+<form method="POST">
+    <button id="createButton" type="submit" class="btn btn-primary" onclick="MakeRoom()">Create Room</button>
+</form>
+<br/>
+<form method="POST">
+    <button id="joinButton" type="submit" class="btn btn-primary" onclick="SetRoom()">Join Room</button>
+    <input type="text" id="roomName" name="roomName" placeholder="Enter room name"/>
+</form>
+<script>
+    randCode = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    function MakeRoom(){
+        room = sessionStorage.setItem("currentRoom", randCode);
+    }
+
+    function SetRoom(){
+        room = sessionStorage.setItem("currentRoom", document.getElementById("roomName").value);
+    }
+
+</script>
 {% endblock %}
 {% block chat %}
 {% endblock %}

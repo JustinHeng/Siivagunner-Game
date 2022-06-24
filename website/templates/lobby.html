@@ -3,12 +3,7 @@
 {% block content %}
 <p>Silvagunner Music Quiz</p>
 <form method="POST">
-    <script>
-        sessionStorage.setItem("count", 0);
-        sessionStorage.setItem("score", 0);
-        sessionStorage.setItem("page", "p");
-    </script>
-    <button type="submit" class="btn btn-primary">Start Game</button>
+    <button id="startButton" type="submit" class="btn btn-primary">Start Game</button>
 </form>
 <br/>
 <button id="goHome" class="btn btn-primary" >Back to Home</button>
@@ -22,9 +17,4 @@
     document.getElementById('showRoom').innerHTML = "Room: " + sessionStorage.getItem("currentRoom");
 </script>
 
-
-
-{% endblock %}
-{% block homeHtml %}
-<!--override-->
 {% endblock %}

@@ -18,10 +18,13 @@
         <title>{% block title %}Home{% endblock %}</title>
         <style>
             body {
-              background-image: url('static/mario.png');
+                background-image: url('static/images/mario.png');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
             }
         </style>
-        <link rel="icon" type="image/x-icon" href="static/favicon.png">
+        <link rel="icon" type="image/x-icon" href="static/images/favicon.png">
     </head>
 
     <body>
@@ -72,6 +75,7 @@
         {% if user.is_authenticated %}
         <p style="text-align:right;">Logged in as: {{user.first_name}} </p>
         {% endif %}
+        <p style="text-align:right;">Created by Justin Heng</p>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
 <!--        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>-->

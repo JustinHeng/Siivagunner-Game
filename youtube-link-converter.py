@@ -13,5 +13,5 @@ while True:
 text = '\n'.join(lines)
 
 for x in range(0, len(lines)):
-    lines[x] = "https://www.youtube.com/embed/" + lines[x][32:43] + "?controls=0"
+    lines[x] = "https://www.youtube.com/embed/" + lines[x][32:43]
     print(lines[x])

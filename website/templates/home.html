@@ -7,18 +7,23 @@
 <br/>
 <form method="POST">
     <button id="joinButton" type="submit" class="btn btn-primary" onclick="SetRoom()">Join Room</button>
-    <input type="text" id="roomName" name="roomName" placeholder="Enter room name"/>
+    <input type="text" id="roomName" name="roomName" placeholder="Enter room name" autocomplete="off"/>
 </form>
 <script>
     randCode = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+
     function MakeRoom(){
         room = sessionStorage.setItem("currentRoom", randCode);
     }
 
     function SetRoom(){
-        room = sessionStorage.setItem("currentRoom", document.getElementById("roomName").value);
+        roomNameInput = document.getElementById("roomName").value;
+        if(/^[a-z]+$/.test(roomNameInput) && roomNameInput.length == 5){
+            room = sessionStorage.setItem("currentRoom", roomNameInput);
+        } else {
+            room = sessionStorage.setItem("currentRoom", randCode);
+        }
     }
-
 </script>
 {% endblock %}
 {% block chat %}

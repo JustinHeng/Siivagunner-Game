@@ -47,4 +47,4 @@ def getRand(roomName):
     socketio.emit("getRand", {"randVid": randVid}, room=roomName)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)

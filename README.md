@@ -1,6 +1,6 @@
 # Silvagunner Music Quiz
  Silvagunner music guessing game website
- https://silvagunner-quiz.herokuapp.com/
+(https://silvagunner-quiz.onrender.com/)
 
 -Users can make an account and play a music quiz that consists of 5 randomly chosen songs from a database of currently ~200 songs
 
@@ -11,3 +11,5 @@
 -Supports both single player and multiplayer
 
 -Songs cans be added in the Siivagunner.csv file (must include youtube link, song name, and parody name)
+
+*Note: The actual deployed repository is set to private
